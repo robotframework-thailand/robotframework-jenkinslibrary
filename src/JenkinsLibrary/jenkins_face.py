@@ -31,7 +31,20 @@ class JenkinsFace(object):
         req = self._session.prepare_request(
             requests.Request(
                 'GET',
-                self._job_url(GET_JOB, name)
+                self._job_url(GET_JOB, [name])
+            )
+        )
+        return self._get_response(
+            self._send(req)
+        )
+
+    def get_job_build(self, name=None, build_number='lastBuild'):
+        if not name:
+            raise Exception('Job name should not be None')
+        req = self._session.prepare_request(
+            requests.Request(
+                'GET',
+                self._job_url(GET_JOB_BUILD, [name, build_number])
             )
         )
         return self._get_response(
@@ -45,7 +58,7 @@ class JenkinsFace(object):
         req = self._session.prepare_request(
             requests.Request(
                 'POST',
-                self._job_url(BUILD_JOB_WITH_PARAMETERS, name),
+                self._job_url(BUILD_JOB_WITH_PARAMETERS, [name]),
                 data=data
             )
         )
@@ -61,6 +74,6 @@ class JenkinsFace(object):
         response.raise_for_status()
         return json.loads(response.content, encoding='utf-8')
 
-    def _job_url(self, url_format, job_name):
-        url = url_format.format(job_name)
+    def _job_url(self, url_format, params):
+        url = url_format.format(*params)
         return self._endpoint + url
