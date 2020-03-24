@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import re
 
 # Read version from file without loading the module
-with open('src/JenkinsLibrary/version.py', 'r') as version_file:
+with open('JenkinsLibrary/version.py', 'r') as version_file:
     version_match = re.search(r"^VERSION ?= ?['\"]([^'\"]*)['\"]", version_file.read(), re.M)
 
 with open("README.md", "r") as fh:

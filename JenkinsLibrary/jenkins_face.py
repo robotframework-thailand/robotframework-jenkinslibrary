@@ -10,12 +10,17 @@ BUILD_JOB_WITH_PARAMETERS = '{}/buildWithParameters'
 
 class JenkinsFace(object):
 
-    def __init__(self,
-                 protocol='https',
-                 url=None,
-                 username=None,
-                 password=None,
-                 verify=False):
+    def __init__(self):
+        self._endpoint = None
+        self._session = None
+        self._settings = None
+
+    def create_session_jenkins(self,
+                               protocol='https',
+                               url=None,
+                               username=None,
+                               password=None,
+                               verify=False):
         if not verify:
             urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
         self._endpoint = BASE_ENDPOINT.format(protocol, username, password, url)
@@ -25,7 +30,7 @@ class JenkinsFace(object):
         )
         self._settings['allow_redirects'] = False
 
-    def get_job(self, name=None):
+    def get_jenkins_job(self, name=None):
         if not name:
             raise Exception('Job name should not be None')
         req = self._session.prepare_request(
@@ -38,7 +43,7 @@ class JenkinsFace(object):
             self._send(req)
         )
 
-    def get_job_build(self, name=None, build_number='lastBuild'):
+    def get_jenkins_job_build(self, name=None, build_number='lastBuild'):
         if not name:
             raise Exception('Job name should not be None')
         req = self._session.prepare_request(
@@ -51,10 +56,10 @@ class JenkinsFace(object):
             self._send(req)
         )
 
-    def build_with_parameters(self, name=None, data=None):
+    def build_jenkins_with_parameters(self, name=None, data=None):
         if not name:
             raise Exception('Job name should not be None')
-        job_detail = self.get_job(name)
+        job_detail = self.get_jenkins_job(name)
         req = self._session.prepare_request(
             requests.Request(
                 'POST',
