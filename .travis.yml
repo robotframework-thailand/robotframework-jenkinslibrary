@@ -11,4 +11,5 @@ deploy:
   on:
     tags: true
     distributions: sdist bdist_wheel
-    repo: robotframework-thailand/robotframework-jenkinslibrary
+    repo: Panchorn/robotframework-jenkinslibrary
+    branch: master
