@@ -5,9 +5,9 @@ install: "pip install -r requirements.txt"
 script: make clean coverage docs dist
 deploy:
   provider: pypi
-  user: nonpcn
+  user: "__token__"
   password:
-    secure: pypi-AgEIcHlwaS5vcmcCJGQ5ZDhhOGVmLTQyMTYtNGRlOC05OGU1LTc0MTg2ZmUyNzFiNQACTnsicGVybWlzc2lvbnMiOiB7InByb2plY3RzIjogWyJyb2JvdGZyYW1ld29yay1qZW5raW5zbGlicmFyeSJdfSwgInZlcnNpb24iOiAxfQAABiAsHoiJts_M1Y9xHzfGUfFolBvn32UFv-l-4TviB0nhpQ
+    secure: "pypi-AgEIcHlwaS5vcmcCJGQ5ZDhhOGVmLTQyMTYtNGRlOC05OGU1LTc0MTg2ZmUyNzFiNQACTnsicGVybWlzc2lvbnMiOiB7InByb2plY3RzIjogWyJyb2JvdGZyYW1ld29yay1qZW5raW5zbGlicmFyeSJdfSwgInZlcnNpb24iOiAxfQAABiAsHoiJts_M1Y9xHzfGUfFolBvn32UFv-l-4TviB0nhpQ"
   on:
     tags: true
     distributions: sdist bdist_wheel
