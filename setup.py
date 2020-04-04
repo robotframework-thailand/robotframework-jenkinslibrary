@@ -18,7 +18,7 @@ REQUIREMENTS = [
 ]
 
 TEST_REQUIREMENTS = [
-    # TODO: put package test requirements here
+    'coverage'
 ]
 
 CLASSIFIERS = [
