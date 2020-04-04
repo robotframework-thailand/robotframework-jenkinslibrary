@@ -1,12 +1,14 @@
+dist: xenial
 language: python
 python:
-  - "3.7"
-install: "pip install -r requirements.txt"
-script: make clean coverage docs dist
+- '3.7'
+install: pip install -r requirements.txt
+script: make clean docs dist
 deploy:
   provider: pypi
-  user: "__token__"
-  password: "pypi-AgEIcHlwaS5vcmcCJGQ5ZDhhOGVmLTQyMTYtNGRlOC05OGU1LTc0MTg2ZmUyNzFiNQACTnsicGVybWlzc2lvbnMiOiB7InByb2plY3RzIjogWyJyb2JvdGZyYW1ld29yay1qZW5raW5zbGlicmFyeSJdfSwgInZlcnNpb24iOiAxfQAABiAsHoiJts_M1Y9xHzfGUfFolBvn32UFv-l-4TviB0nhpQ"
+  user: __token__
+  password:
+    secure: LnRMKO1yXkg0ad3jPKxVHKThhwoT7H5/wOrytCIcs2l+/WqiJ4qjModrYwjciU9hEtnCwtKKVUWlFGbIHASgihqFeqQruSHgWENPxh1zx0zexD8j/sasqo9eqTX+oHvQzjyr+U1YNBhvLakWbfvFSx4siMrgFWGnoGjjM523b3Ap5X4uZ6N16zWe3uby/7Bz0lcsAvbnqtoVxbAZSMsM+oGIcVTio+dd1etWl5axyybXMNlG52zcZh9BZ/ZotgSPuuGb29W68fL25L/bqytdw8rif0vydMmmTOjjQy1sJ9pDPZwbtJ4fyi6T3zIToML9D/MG7nULHvV1L2rd4hSkNLK/NbKBcitr1Gu69xL6FxvmoJygJzuj/6EQmww8tOSIr2accDhXNobsnS/cP3Bf8YMRwqftBGH5xWqYzd7vT/vv/bcISbRYm4ugnYMO7AfFyZCKNVp5bsNxQ4P9IqzX93EgsBvKdySl1Juo9yiy8F5RvAOgJt2++7JBXkvX32xN3u2BTkGyCQM/lTWwkGJ/s5j0HA/2YNO9mPJNMgO9ZAxxK/zPSNOf44Oi7Gcd7OJhytoV503Uo15HA8RaamOnlve/edup0NzeJMmI/SEkyhEW/yUViLcijYZACHCMydTC5XO71chk0tegcZbJpdEpeSXqCrqfTiaoxieCT6fMeTw=
   on:
     tags: true
     branch: master
