@@ -21,6 +21,8 @@ class JenkinsFace(object):
                                username=None,
                                password=None,
                                verify=False):
+        if not url or not username or not password:
+            raise Exception('Require parameters should not be none')
         if not verify:
             urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
         self._endpoint = BASE_ENDPOINT.format(protocol, username, password, url)
