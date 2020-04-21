@@ -1,6 +1,7 @@
 import requests
 import json
 import urllib3
+from robot.api.deco import keyword
 
 BASE_ENDPOINT = '{}://{}:{}@{}/'
 GET_JOB = '{}/api/json'
@@ -15,6 +16,7 @@ class JenkinsFace(object):
         self._session = None
         self._settings = None
 
+    @keyword('Create Session Jenkins')
     def create_session_jenkins(self,
                                protocol='https',
                                url=None,
@@ -32,6 +34,7 @@ class JenkinsFace(object):
         )
         self._settings['allow_redirects'] = False
 
+    @keyword('Get Jenkins Job')
     def get_jenkins_job(self, name=None):
         if not name:
             raise Exception('Job name should not be None')
@@ -45,6 +48,7 @@ class JenkinsFace(object):
             self._send(req)
         )
 
+    @keyword('Get Jenkins Job Build')
     def get_jenkins_job_build(self, name=None, build_number='lastBuild'):
         if not name:
             raise Exception('Job name should not be None')
@@ -58,6 +62,7 @@ class JenkinsFace(object):
             self._send(req)
         )
 
+    @keyword('Build Jenkins With Parameters')
     def build_jenkins_with_parameters(self, name=None, data=None):
         if not name:
             raise Exception('Job name should not be None')
