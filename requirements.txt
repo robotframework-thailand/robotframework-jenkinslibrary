@@ -3,3 +3,4 @@ robotframework
 pytest
 pytest-cov
 codecov
+requests_mock

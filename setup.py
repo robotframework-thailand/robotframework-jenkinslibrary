@@ -18,7 +18,7 @@ REQUIREMENTS = [
 ]
 
 TEST_REQUIREMENTS = [
-    'coverage', 'wheel', 'pytest'
+    'coverage', 'wheel', 'pytest', 'requests_mock'
 ]
 
 CLASSIFIERS = [
