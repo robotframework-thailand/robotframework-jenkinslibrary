@@ -40,6 +40,3 @@ class JenkinsSessionTest(unittest.TestCase):
         except:
             raised = True
         self.assertTrue(raised)
-
-    if __name__ == '__main__':
-        unittest.main()
