@@ -12,7 +12,7 @@ class GetJenkinsJobTest(unittest.TestCase):
     @requests_mock.Mocker()
     def test_get_jenkins_job_build_success_with_last_build(self, mock):
         mock.get(
-            'http://username:password@localhost:8080/job/test/lastBuild/api/json',
+            'http://username:password@localhost:8080/job/folder_name/job/test_job/lastBuild/api/json',
             json={
                 "_class": "",
                 "actions": [],
@@ -20,7 +20,7 @@ class GetJenkinsJobTest(unittest.TestCase):
                 "displayName": "",
                 "displayNameOrNull": "",
                 "name": "",
-                "url": "http://localhost:8080/job/test/",
+                "url": "http://localhost:8080/job/folder_name/job/test_job/99/",
                 "buildable": True,
                 "builds": [],
                 "color": "blue",
@@ -35,7 +35,7 @@ class GetJenkinsJobTest(unittest.TestCase):
                 "lastSuccessfulBuild": {},
                 "lastUnstableBuild": None,
                 "lastUnsuccessfulBuild": {},
-                "nextBuildNumber": 1,
+                "nextBuildNumber": 100,
                 "property": [],
                 "queueItem": None,
                 "concurrentBuild": False
@@ -43,14 +43,14 @@ class GetJenkinsJobTest(unittest.TestCase):
         )
 
         self.jenkins.create_session_jenkins('http', 'localhost:8080', 'username', 'password', False)
-        result = self.jenkins.get_jenkins_job_build('job/test')
+        result = self.jenkins.get_jenkins_job_build('folder_name/test_job')
 
-        self.assertEqual(result['url'], 'http://localhost:8080/job/test/')
+        self.assertEqual(result['url'], 'http://localhost:8080/job/folder_name/job/test_job/99/')
 
     @requests_mock.Mocker()
     def test_get_jenkins_job_build_success(self, mock):
         mock.get(
-            'http://username:password@localhost:8080/job/test/99/api/json',
+            'http://username:password@localhost:8080/job/folder_name/job/test_job/99/api/json',
             json={
                 "_class": "",
                 "actions": [],
@@ -58,7 +58,7 @@ class GetJenkinsJobTest(unittest.TestCase):
                 "displayName": "",
                 "displayNameOrNull": "",
                 "name": "",
-                "url": "http://localhost:8080/job/test/",
+                "url": "http://localhost:8080/job/folder_name/job/test_job/99/",
                 "buildable": True,
                 "builds": [],
                 "color": "blue",
@@ -73,7 +73,7 @@ class GetJenkinsJobTest(unittest.TestCase):
                 "lastSuccessfulBuild": {},
                 "lastUnstableBuild": None,
                 "lastUnsuccessfulBuild": {},
-                "nextBuildNumber": 1,
+                "nextBuildNumber": 100,
                 "property": [],
                 "queueItem": None,
                 "concurrentBuild": False
@@ -81,9 +81,9 @@ class GetJenkinsJobTest(unittest.TestCase):
         )
 
         self.jenkins.create_session_jenkins('http', 'localhost:8080', 'username', 'password', False)
-        result = self.jenkins.get_jenkins_job_build('job/test', '99')
+        result = self.jenkins.get_jenkins_job_build('folder_name/test_job', '99')
 
-        self.assertEqual(result['url'], 'http://localhost:8080/job/test/')
+        self.assertEqual(result['url'], 'http://localhost:8080/job/folder_name/job/test_job/99/')
 
     def test_get_jenkins_job_build_fail_when_name_is_none(self):
         self.jenkins.create_session_jenkins('http', 'localhost:8080', 'username', 'password', False)
@@ -106,7 +106,7 @@ class GetJenkinsJobTest(unittest.TestCase):
     @requests_mock.Mocker()
     def test_get_jenkins_job_build_fail_when_exception(self, mock):
         mock.get(
-            'http://username:password@localhost:8080/job/test/lastBuild/api/json',
+            'http://username:password@localhost:8080/job/folder_name/job/test_job/lastBuild/api/json',
             exc=requests.exceptions.HTTPError
         )
 
@@ -114,7 +114,7 @@ class GetJenkinsJobTest(unittest.TestCase):
         raised = False
 
         try:
-            self.jenkins.get_jenkins_job_build('job/test')
+            self.jenkins.get_jenkins_job_build('folder_name/test_job')
         except requests.exceptions.HTTPError:
             raised = True
 

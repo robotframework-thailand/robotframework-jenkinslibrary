@@ -12,7 +12,7 @@ class BuildJenkinsWithParametersTest(unittest.TestCase):
     @requests_mock.Mocker()
     def test_build_jenkins_with_parameters_success(self, mock):
         mock.get(
-            'http://username:password@localhost:8080/job/test/api/json',
+            'http://username:password@localhost:8080/job/folder_name/job/test_job/api/json',
             json={
                 "_class": "",
                 "actions": [],
@@ -20,7 +20,7 @@ class BuildJenkinsWithParametersTest(unittest.TestCase):
                 "displayName": "",
                 "displayNameOrNull": "",
                 "name": "",
-                "url": "http://localhost:8080/job/test/",
+                "url": "http://localhost:8080/job/folder_name/job/test_job/",
                 "buildable": True,
                 "builds": [],
                 "color": "blue",
@@ -43,12 +43,12 @@ class BuildJenkinsWithParametersTest(unittest.TestCase):
         )
 
         mock.post(
-            'http://username:password@localhost:8080/job/test/buildWithParameters',
+            'http://username:password@localhost:8080/job/folder_name/job/test_job/buildWithParameters',
             status_code=200
         )
 
         self.jenkins.create_session_jenkins('http', 'localhost:8080', 'username', 'password', False)
-        result = self.jenkins.build_jenkins_with_parameters('job/test', 'merchant_test')
+        result = self.jenkins.build_jenkins_with_parameters('folder_name/test_job', 'data_test')
 
         self.assertEqual(result, 1)
 
@@ -73,7 +73,7 @@ class BuildJenkinsWithParametersTest(unittest.TestCase):
     @requests_mock.Mocker()
     def test_build_jenkins_with_parameters_when_exception(self, mock):
         mock.get(
-            'http://username:password@localhost:8080/job/test/api/json',
+            'http://username:password@localhost:8080/job/folder_name/job/test_job/api/json',
             json={
                 "_class": "",
                 "actions": [],
@@ -81,7 +81,7 @@ class BuildJenkinsWithParametersTest(unittest.TestCase):
                 "displayName": "",
                 "displayNameOrNull": "",
                 "name": "",
-                "url": "http://localhost:8080/job/test/",
+                "url": "http://localhost:8080/job/folder_name/job/test_job/",
                 "buildable": True,
                 "builds": [],
                 "color": "blue",
@@ -104,7 +104,7 @@ class BuildJenkinsWithParametersTest(unittest.TestCase):
         )
 
         mock.post(
-            'http://username:password@localhost:8080/job/test/buildWithParameters',
+            'http://username:password@localhost:8080/job/folder_name/job/test_job/buildWithParameters',
             exc=requests.exceptions.HTTPError
         )
 
@@ -112,7 +112,7 @@ class BuildJenkinsWithParametersTest(unittest.TestCase):
         raised = False
 
         try:
-            self.jenkins.build_jenkins_with_parameters('job/test', 'merchant_test')
+            self.jenkins.build_jenkins_with_parameters('folder_name/test_job', 'data_test')
         except requests.exceptions.HTTPError:
             raised = True
 
