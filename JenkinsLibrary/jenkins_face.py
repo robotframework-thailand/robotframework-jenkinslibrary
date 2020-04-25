@@ -41,7 +41,7 @@ class JenkinsFace(object):
         req = self._session.prepare_request(
             requests.Request(
                 'GET',
-                self._job_url(GET_JOB, [name])
+                self._job_url(GET_JOB, [self._job_folder(name)])
             )
         )
         return self._get_response(
@@ -55,7 +55,7 @@ class JenkinsFace(object):
         req = self._session.prepare_request(
             requests.Request(
                 'GET',
-                self._job_url(GET_JOB_BUILD, [name, build_number])
+                self._job_url(GET_JOB_BUILD, [self._job_folder(name), build_number])
             )
         )
         return self._get_response(
@@ -70,7 +70,7 @@ class JenkinsFace(object):
         req = self._session.prepare_request(
             requests.Request(
                 'POST',
-                self._job_url(BUILD_JOB_WITH_PARAMETERS, [name]),
+                self._job_url(BUILD_JOB_WITH_PARAMETERS, [self._job_folder(name)]),
                 data=data
             )
         )
@@ -89,3 +89,12 @@ class JenkinsFace(object):
     def _job_url(self, url_format, params):
         url = url_format.format(*params)
         return self._endpoint + url
+
+    @staticmethod
+    def _job_folder(name):
+        path_list = name.split('/')
+        folder_name = ''
+        job_name = path_list[-1]
+        if len(path_list) > 1:
+            folder_name = 'job/' + '/job/'.join(path_list[:-1]) + '/'
+        return folder_name + 'job/' + job_name
