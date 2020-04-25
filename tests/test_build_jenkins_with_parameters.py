@@ -4,7 +4,7 @@ import requests
 from JenkinsLibrary.jenkins_face import JenkinsFace
 
 
-class TestBuildJenkinsWithParameters(unittest.TestCase):
+class BuildJenkinsWithParametersTest(unittest.TestCase):
 
     def setUp(self) -> None:
         self.jenkins = JenkinsFace()
