@@ -97,4 +97,4 @@ class JenkinsFace(object):
         job_name = path_list[-1]
         if len(path_list) > 1:
             folder_name = 'job/' + '/job/'.join(path_list[:-1]) + '/'
-        return folder_name + 'job/' + job_name + '/'
+        return folder_name + 'job/' + job_name
