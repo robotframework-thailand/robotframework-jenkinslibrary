@@ -26,6 +26,17 @@ class JenkinsFace(object):
                                username=None,
                                password=None,
                                verify=False):
+        """Create Session Jenkins
+
+        To initiate session of jenkins
+
+        :param protocol: http or https, ``str``
+        :param url: jenkins base url, ``str``
+        :param username: username of jenkins account, ``str``
+        :param password: password of jenkins account, ``str``
+        :param verify: to ignore verifying the SSL certificate set to False, ``bool``
+        :return: returns nothing
+        """
         if not url or not username or not password:
             raise Exception('Require parameters should not be none')
         if not verify:
@@ -39,6 +50,13 @@ class JenkinsFace(object):
 
     @keyword('Get Jenkins Job')
     def get_jenkins_job(self, name=None):
+        """Get Jenkins Job
+
+        Get jenkins job details
+
+        :param name: fullname of job, ``str``
+        :return: returns dictionary of job information
+        """
         if not name:
             raise Exception('Job name should not be None')
         req = self._session.prepare_request(
@@ -53,6 +71,15 @@ class JenkinsFace(object):
 
     @keyword('Get Jenkins Job Build')
     def get_jenkins_job_build(self, name=None, build_number='lastBuild'):
+        """Get Jenkins Job Build
+
+        Get build details of jenkins job by build number,
+        And if need latest build, leave build_number blank.
+
+        :param name: fullname of job, ``str``
+        :param build_number: number of build, ``str``
+        :return: returns dictionary of job information
+        """
         if not name:
             raise Exception('Job name should not be None')
         req = self._session.prepare_request(
@@ -67,6 +94,14 @@ class JenkinsFace(object):
 
     @keyword('Build Jenkins With Parameters')
     def build_jenkins_with_parameters(self, name=None, data=None):
+        """Build Jenkins With Parameters
+
+        Trigger build job jenkins
+
+        :param name: fullname of job, ``str``
+        :param data: job's parameters, ``dict``
+        :return: ``int`` build number of starting job
+        """
         if not name:
             raise Exception('Job name should not be None')
         job_detail = self.get_jenkins_job(name)
