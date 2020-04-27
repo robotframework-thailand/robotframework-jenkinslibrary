@@ -2,6 +2,9 @@ import requests
 import json
 import urllib3
 from robot.api.deco import keyword
+from .version import VERSION
+
+__version__ = VERSION
 
 BASE_ENDPOINT = '{}://{}:{}@{}/'
 GET_JOB = '{}/api/json'
