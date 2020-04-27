@@ -43,6 +43,7 @@ setup(
     author="Panchorn Lertvipada, Nitipat Phiphatprathuang",
     author_email="nonpcn@gmail.com, banknitipat@gmail.com",
     description="Jenkins wrapper library for robotframework",
+    long_description=long_description,
     url="https://github.com/Panchorn/robotframework-jenkinslibrary.git",
     license="MIT",
     packages=find_packages(),
