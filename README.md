@@ -9,11 +9,11 @@ pip install -U robotframework-jsonlibrary
 ```
 # Example Test Case
 
-*** Settings ***       |                       |                  |                 |                  |
----------------------- |---------------------- |----------------- |---------------- |----------------- |
-Library                | JenkinsLibrary        |                  |                 |                  |
-*** Test Cases ***     |                       |                  |                 |                  |
-create session jenkins | ${protocol}           |                  |                 |                  |
-${job_details}=        | Get Jenkins Job       | ${job_full_name} |                 |                  |
-${job_build_details}=  | Get Jenkins Job Build | ${job_full_name} | ${build_number} |                  |
-${build_number}=       | Build Jenkins With Parameters | ${job_full_name} | ${parameters_string} |     |
+*** Settings ***       |                       |                  |                 |                  |              |
+---------------------- |---------------------- |----------------- |---------------- |----------------- |------------- |
+Library                | JenkinsLibrary        | ${host}          | ${username}     | ${password}      | ${verify}    |
+*** Test Cases ***     |                       |                  |                 |                  |              |
+create session jenkins | ${protocol}           |                  |                 |                  |              |
+${job_details}=        | Get Jenkins Job       | ${job_full_name} |                 |                  |              |
+${job_build_details}=  | Get Jenkins Job Build | ${job_full_name} | ${build_number} |                  |              |
+${build_number}=       | Build Jenkins With Parameters | ${job_full_name} | ${parameters_string} |     |              |
