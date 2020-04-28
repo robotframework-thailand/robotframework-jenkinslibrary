@@ -1,4 +1,0 @@
-ignore:
-  - "setup.py"
-  - "JenkinsLibrary/version.py"
-  - "generate.py"
