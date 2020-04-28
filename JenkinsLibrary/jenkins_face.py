@@ -30,12 +30,17 @@ class JenkinsFace(object):
 
         To initiate session of jenkins
 
-        :param protocol: http or https, ``str``
-        :param url: jenkins base url, ``str``
-        :param username: username of jenkins account, ``str``
-        :param password: password of jenkins account, ``str``
-        :param verify: to ignore verifying the SSL certificate set to False, ``bool``
-        :return: returns nothing
+        Arguments:
+            - protocol: http or https ``str``
+            - url: jenkins base url ``str``
+            - username: username of jenkins account ``str``
+            - password: password or token of jenkins account ``str``
+            - verify: to ignore verifying the SSL certificate set to False ``bool``
+
+        Return nothing
+
+        Examples:
+        | create session jenkins | ${protocol} | ${host} | ${username} | ${password} | ${verify} |
         """
         if not url or not username or not password:
             raise Exception('Require parameters should not be none')
@@ -54,8 +59,13 @@ class JenkinsFace(object):
 
         Get jenkins job details
 
-        :param name: fullname of job, ``str``
-        :return: returns dictionary of job information
+        Arguments:
+            - name: fullname of job ``str``
+
+        Return dictionary of job information ``dict``
+
+        Examples:
+        | ${job_details}= | Get Jenkins Job | ${job_full_name} |
         """
         if not name:
             raise Exception('Job name should not be None')
@@ -76,9 +86,14 @@ class JenkinsFace(object):
         Get build details of jenkins job by build number,
         And if need latest build, leave build_number blank.
 
-        :param name: fullname of job, ``str``
-        :param build_number: number of build, ``str``
-        :return: returns dictionary of job information
+        Arguments:
+            - name: fullname of job ``str``
+            - build_number: number of build ``str``
+
+        Return dictionary of job information ``dict``
+
+        Examples:
+        | ${job_build_details}= | Get Jenkins Job Build | ${job_full_name} | ${build_number} |
         """
         if not name:
             raise Exception('Job name should not be None')
@@ -98,9 +113,14 @@ class JenkinsFace(object):
 
         Trigger build job jenkins
 
-        :param name: fullname of job, ``str``
-        :param data: job's parameters, ``dict``
-        :return: ``int`` build number of starting job
+        Arguments:
+            - name: fullname of job ``str``
+            - data: job's parameters ``str``
+
+        Return build number of starting job ``int``
+
+        Examples:
+        | ${build_number}= | Build Jenkins With Parameters | ${job_full_name} | ${parameters_string} |
         """
         if not name:
             raise Exception('Job name should not be None')
