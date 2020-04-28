@@ -24,8 +24,7 @@ ${build_number}=       | Build Jenkins With Parameters | ${job_full_name} | ${pa
 For more keyword detail go to the following link:
 https://panchorn.github.io/robotframework-jenkinslibrary/
 
-##
-Uninstall package:
+## Uninstall package
 ```bash
 pip uninstall robotframework-jenkinslibrary 
 ```
