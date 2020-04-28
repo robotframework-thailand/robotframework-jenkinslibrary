@@ -4,11 +4,12 @@
 
 Jenkins wrapper library for robotframework
 
-# Usage
+## Usage
+Install package by using pip:
 ```bash
-pip install -U robotframework-jsonlibrary
+pip install -U robotframework-jenkinslibrary
 ```
-# Example Test Case
+## Example Test Case
 
 *** Settings ***       |                       |                  |                 |                  |                  |
 ---------------------- |---------------------- |----------------- |---------------- |----------------- |----------------- |
@@ -19,5 +20,20 @@ ${job_details}=        | Get Jenkins Job       | ${job_full_name} |             
 ${job_build_details}=  | Get Jenkins Job Build | ${job_full_name} | ${build_number} |                  |                  |
 ${build_number}=       | Build Jenkins With Parameters | ${job_full_name} | ${parameters_string} |     |                  |
 
-# Document
+## Document
+For more keyword detail go to the following link:
 https://panchorn.github.io/robotframework-jenkinslibrary/
+
+##
+Uninstall package:
+```bash
+pip uninstall robotframework-jenkinslibrary 
+```
+
+## Feature Status
+| API | Status |
+|---|---|
+| Get Jenkins Job | + |
+| Get Jenkins Job Build | + |
+| Build Jenkins With Parameters | + |
+| - | - |
