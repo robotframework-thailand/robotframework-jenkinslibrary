@@ -1,5 +1,6 @@
 # robotframework-jenkinslibrary
 [![codecov](https://codecov.io/gh/Panchorn/robotframework-jenkinslibrary/branch/master/graph/badge.svg)](https://codecov.io/gh/Panchorn/robotframework-jenkinslibrary)
+[![PyPI](https://img.shields.io/pypi/v/robotframework-jenkinslibrary.svg)](https://pypi.org/project/robotframework-jenkinslibrary/)
 
 Jenkins wrapper library for robotframework
 
