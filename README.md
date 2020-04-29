@@ -13,9 +13,9 @@ pip install -U robotframework-jenkinslibrary
 
 *** Settings ***       |                       |                  |                 |                  |                  |
 ---------------------- |---------------------- |----------------- |---------------- |----------------- |----------------- |
-Library                | JenkinsLibrary        | ${host}          | ${username}     | ${password}      | ${verify}        |
+Library                | JenkinsLibrary        |                  |                 |                  |                  |
 *** Test Cases ***     |                       |                  |                 |                  |                  |
-create session jenkins | ${protocol}           |                  |                 |                  |                  |
+create session jenkins | ${protocol}           | ${host}          | ${username}     | ${password}      | ${verify}        |
 ${job_details}=        | Get Jenkins Job       | ${job_full_name} |                 |                  |                  |
 ${job_build_details}=  | Get Jenkins Job Build | ${job_full_name} | ${build_number} |                  |                  |
 ${build_number}=       | Build Jenkins With Parameters | ${job_full_name} | ${parameters_string} |     |                  |
