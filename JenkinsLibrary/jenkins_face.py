@@ -1,6 +1,7 @@
 import requests
 import json
 import urllib3
+import time
 from robot.api.deco import keyword
 from .version import VERSION
 
@@ -18,6 +19,7 @@ class JenkinsFace(object):
         self._endpoint = None
         self._session = None
         self._settings = None
+        self._requests = None
 
     @keyword('Create Session Jenkins')
     def create_session_jenkins(self,
@@ -103,6 +105,7 @@ class JenkinsFace(object):
                 self._job_url(GET_JOB_BUILD, [self._job_folder(name), build_number])
             )
         )
+        self._requests = requests
         return self._get_response(
             self._send(req)
         )
@@ -135,6 +138,45 @@ class JenkinsFace(object):
         response = self._send(req)
         response.raise_for_status()
         return job_detail['nextBuildNumber']
+
+    @keyword('Build Jenkins And Get Build Status')
+    def build_jenkins_and_get_build_status(self, name=None, data=None, response_bool=False,
+                                           expect_result='SUCCESS', expect_building=False):
+        """Build Jenkins And Get Build Status
+
+        Trigger build job jenkins and wait until build job done
+
+        Arguments:
+            - name: fullname of job ``str``
+            - data: job's parameters ``str``
+            - response_bool: select response type [boolean] or [dictionary] ``bool``
+            - expect_result: expect result from job information ``str``
+            - expect_building: expect building from job information ``bool``
+
+        Return dictionary of job information ``dict``
+
+        Examples:
+        | ${build_status}= | Build Jenkins And Get Build Status | ${job_full_name} | ${parameters_string} |
+        """
+        if not name:
+            raise Exception('Job name should not be None')
+        next_build_no = self.build_jenkins_with_parameters(name, data)
+        next_build_no = str(next_build_no)
+        response = str()
+        retry = 24
+        retry_interval = 5
+        for i in range(retry):
+            time.sleep(retry_interval)
+            try:
+                response = self.get_jenkins_job_build(name, next_build_no)
+                if response['result'] == expect_result and response['building'] == bool(expect_building):
+                    return True if response_bool else response
+            except self._requests.HTTPError as err:
+                if '404 Client Error' in str(err):
+                    pass
+        if response_bool:
+            return False
+        return response
 
     def _send(self, req):
         return self._session.send(req, **self._settings)
