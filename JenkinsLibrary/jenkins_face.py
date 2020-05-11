@@ -139,9 +139,9 @@ class JenkinsFace(object):
         response.raise_for_status()
         return job_detail['nextBuildNumber']
 
-    @keyword('Build Jenkins And Get Build Status')
-    def build_jenkins_and_get_build_status(self, name=None, data=None, response_bool=False,
-                                           expect_result='SUCCESS', expect_building=False):
+    @keyword('Build Jenkins With Parameters And Wait Until Job Done')
+    def build_jenkins_with_parameters_and_wait_until_job_done(self, name=None, data=None, expect_building=False,
+                                                              retry=24, retry_interval=5):
         """Build Jenkins And Get Build Status
 
         Trigger build job jenkins and wait until build job done
@@ -149,9 +149,9 @@ class JenkinsFace(object):
         Arguments:
             - name: fullname of job ``str``
             - data: job's parameters ``str``
-            - response_bool: select response type [boolean] or [dictionary] ``bool``
-            - expect_result: expect result from job information ``str``
             - expect_building: expect building from job information ``bool``
+            - retry: times to try to get the expected value ``int``
+            - retry_interval: wait times before retry ``int``
 
         Return dictionary of job information ``dict``
 
@@ -163,19 +163,19 @@ class JenkinsFace(object):
         next_build_no = self.build_jenkins_with_parameters(name, data)
         next_build_no = str(next_build_no)
         response = str()
-        retry = 24
-        retry_interval = 5
         for i in range(retry):
             time.sleep(retry_interval)
             try:
                 response = self.get_jenkins_job_build(name, next_build_no)
-                if response['result'] == expect_result and response['building'] == bool(expect_building):
-                    return True if response_bool else response
+                if response['building'] == bool(expect_building):
+                    return response
             except self._requests.HTTPError as err:
-                if '404 Client Error' in str(err):
+                if err.response and err.response.status_code is 400:
                     pass
-        if response_bool:
-            return False
+                else:
+                    raise Exception(f'HTTP error: {err}')
+            except Exception as err:
+                raise Exception(f'Error: {err}')
         return response
 
     def _send(self, req):
