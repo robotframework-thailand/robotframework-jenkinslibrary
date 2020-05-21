@@ -19,7 +19,6 @@ class JenkinsFace(object):
         self._endpoint = None
         self._session = None
         self._settings = None
-        self._requests = None
 
     @keyword('Create Session Jenkins')
     def create_session_jenkins(self,
@@ -105,7 +104,6 @@ class JenkinsFace(object):
                 self._job_url(GET_JOB_BUILD, [self._job_folder(name), build_number])
             )
         )
-        self._requests = requests
         return self._get_response(
             self._send(req)
         )
@@ -154,20 +152,19 @@ class JenkinsFace(object):
         Return dictionary of job information if job done ``dict``, otherwise will return ``None``
 
         Examples:
-        | ${build_status}= | Build Jenkins And Get Build Status | ${job_full_name} | ${parameters_string} | 10 | 2 |
+        | ${job_build_details}= | Build Jenkins With Parameters And Wait Until Job Done | ${job_full_name} | ${parameters_string} | 10 | 2 |
         """
         if not name:
             raise Exception('Job name should not be None')
         next_build_no = self.build_jenkins_with_parameters(name, data)
-        next_build_no = str(next_build_no)
         for _ in range(retry):
             time.sleep(retry_interval)
             try:
                 response = self.get_jenkins_job_build(name, next_build_no)
-                if response['building'] is False:
+                if response['building'] == False:
                     return response
             except requests.exceptions.HTTPError as err:
-                if err.response.status_code is 404:
+                if err.response.status_code == 404:
                     pass
                 else:
                     raise err
