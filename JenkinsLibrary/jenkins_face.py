@@ -1,6 +1,7 @@
 import requests
 import json
 import urllib3
+import time
 from robot.api.deco import keyword
 from .version import VERSION
 
@@ -135,6 +136,40 @@ class JenkinsFace(object):
         response = self._send(req)
         response.raise_for_status()
         return job_detail['nextBuildNumber']
+
+    @keyword('Build Jenkins With Parameters And Wait Until Job Done')
+    def build_jenkins_with_parameters_and_wait_until_job_done(self, name=None, data=None, retry=24, retry_interval=5):
+        """Build Jenkins With Parameters And Wait Until Job Done
+
+        Trigger build job jenkins and wait until build job done
+
+        Arguments:
+            - name: fullname of job ``str``
+            - data: job's parameters ``str``
+            - retry: number of times to retry ``int`` ``default is 24``
+            - retry_interval: time to wait before checking job status again ``int`` ``default is 5``
+
+        Return dictionary of job information if job done ``dict``, otherwise will return ``None``
+
+        Examples:
+        | ${job_build_details}= | Build Jenkins With Parameters And Wait Until Job Done | ${job_full_name} | ${parameters_string} | 10 | 2 |
+        """
+        if not name:
+            raise Exception('Job name should not be None')
+        next_build_no = self.build_jenkins_with_parameters(name, data)
+        for _ in range(retry):
+            time.sleep(retry_interval)
+            try:
+                response = self.get_jenkins_job_build(name, next_build_no)
+                if response['building'] == False:
+                    return response
+            except requests.exceptions.HTTPError as err:
+                if err.response.status_code == 404:
+                    pass
+                else:
+                    raise err
+            except Exception as err:
+                raise err
 
     def _send(self, req):
         return self._session.send(req, **self._settings)
