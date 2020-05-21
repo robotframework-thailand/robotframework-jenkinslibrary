@@ -140,43 +140,39 @@ class JenkinsFace(object):
         return job_detail['nextBuildNumber']
 
     @keyword('Build Jenkins With Parameters And Wait Until Job Done')
-    def build_jenkins_with_parameters_and_wait_until_job_done(self, name=None, data=None, expect_building=False,
-                                                              retry=24, retry_interval=5):
-        """Build Jenkins And Get Build Status
+    def build_jenkins_with_parameters_and_wait_until_job_done(self, name=None, data=None, retry=24, retry_interval=5):
+        """Build Jenkins With Parameters And Wait Until Job Done
 
         Trigger build job jenkins and wait until build job done
 
         Arguments:
             - name: fullname of job ``str``
             - data: job's parameters ``str``
-            - expect_building: expect building from job information ``bool``
-            - retry: times to try to get the expected value ``int``
-            - retry_interval: wait times before retry ``int``
+            - retry: number of times to retry ``int`` ``default is 24``
+            - retry_interval: time to wait before checking job status again ``int`` ``default is 5``
 
-        Return dictionary of job information ``dict``
+        Return dictionary of job information if job done ``dict``, otherwise will return ``None``
 
         Examples:
-        | ${build_status}= | Build Jenkins And Get Build Status | ${job_full_name} | ${parameters_string} |
+        | ${build_status}= | Build Jenkins And Get Build Status | ${job_full_name} | ${parameters_string} | 10 | 2 |
         """
         if not name:
             raise Exception('Job name should not be None')
         next_build_no = self.build_jenkins_with_parameters(name, data)
         next_build_no = str(next_build_no)
-        response = str()
-        for i in range(retry):
+        for _ in range(retry):
             time.sleep(retry_interval)
             try:
                 response = self.get_jenkins_job_build(name, next_build_no)
-                if response['building'] == bool(expect_building):
+                if response['building'] is False:
                     return response
-            except self._requests.HTTPError as err:
-                if err.response and err.response.status_code is 400:
+            except requests.exceptions.HTTPError as err:
+                if err.response.status_code is 404:
                     pass
                 else:
-                    raise Exception(f'HTTP error: {err}')
+                    raise err
             except Exception as err:
-                raise Exception(f'Error: {err}')
-        return response
+                raise err
 
     def _send(self, req):
         return self._session.send(req, **self._settings)

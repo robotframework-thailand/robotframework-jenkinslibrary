@@ -145,7 +145,7 @@ class BuildJenkinsWithParametersAndWaitUntilJobDoneTest(unittest.TestCase):
 
         mock.get(
             'http://username:password@localhost:8080/job/folder_name/job/test_job/6/api/json',
-            exc=requests.exceptions.HTTPError
+            status_code=400
         )
 
         self.jenkins.create_session_jenkins('http', 'localhost:8080', 'username', 'password', False)
@@ -154,8 +154,8 @@ class BuildJenkinsWithParametersAndWaitUntilJobDoneTest(unittest.TestCase):
         try:
             self.jenkins.build_jenkins_with_parameters_and_wait_until_job_done('folder_name/test_job',
                                                                                'data_test', retry=1)
-        except Exception as error:
-            self.assertEqual(str(error), 'HTTP error: ')
+        except requests.exceptions.HTTPError as err:
+            self.assertTrue(err.response.status_code is 400)
             raised = True
 
         self.assertTrue(raised)
@@ -209,8 +209,91 @@ class BuildJenkinsWithParametersAndWaitUntilJobDoneTest(unittest.TestCase):
 
         try:
             self.jenkins.build_jenkins_with_parameters_and_wait_until_job_done('folder_name/test_job', 'data_test')
-        except Exception as error:
-            self.assertEqual(str(error), 'Error: ')
+        except requests.exceptions.ConnectionError:
+            raised = True
+
+        self.assertTrue(raised)
+
+    @requests_mock.Mocker()
+    def test_build_jenkins_with_parameters_and_wait_until_job_done_when_get_job_detail_fail(self, mock):
+        mock.get(
+            'http://username:password@localhost:8080/job/folder_name/job/test_job/api/json',
+            json={
+                "_class": "",
+                "actions": [],
+                "description": None,
+                "displayName": "",
+                "displayNameOrNull": "",
+                "name": "",
+                "url": "http://localhost:8080/job/folder_name/job/test_job/",
+                "buildable": True,
+                "builds": [],
+                "color": "blue",
+                "firstBuild": {},
+                "healthReport": [],
+                "inQueue": False,
+                "keepDependencies": False,
+                "lastBuild": {},
+                "lastCompletedBuild": {},
+                "lastFailedBuild": {},
+                "lastStableBuild": {},
+                "lastSuccessfulBuild": {},
+                "lastUnstableBuild": None,
+                "lastUnsuccessfulBuild": {},
+                "nextBuildNumber": 1,
+                "property": [],
+                "queueItem": None,
+                "concurrentBuild": False,
+                "building": True
+            }
+        )
+
+        mock.post(
+            'http://username:password@localhost:8080/job/folder_name/job/test_job/buildWithParameters',
+            status_code=200
+        )
+
+        mock.get(
+            'http://username:password@localhost:8080/job/folder_name/job/test_job/1/api/json',
+            json={
+                "_class": "",
+                "actions": [],
+                "description": None,
+                "displayName": "",
+                "displayNameOrNull": "",
+                "name": "",
+                "url": "http://localhost:8080/job/folder_name/job/test_job/1/api/json",
+                "buildable": True,
+                "builds": [],
+                "color": "blue",
+                "firstBuild": {},
+                "healthReport": [],
+                "inQueue": False,
+                "keepDependencies": False,
+                "lastBuild": {},
+                "lastCompletedBuild": {},
+                "lastFailedBuild": {},
+                "lastStableBuild": {},
+                "lastSuccessfulBuild": {},
+                "lastUnstableBuild": None,
+                "lastUnsuccessfulBuild": {},
+                "nextBuildNumber": 2,
+                "property": [],
+                "queueItem": None,
+                "status_code": 400,
+                "concurrentBuild": False,
+                "building": False
+            },
+            status_code=404
+        )
+
+        self.jenkins.create_session_jenkins('http', 'localhost:8080', 'username', 'password', False)
+        raised = False
+
+        try:
+            self.jenkins.build_jenkins_with_parameters_and_wait_until_job_done('folder_name/test_job', 'data_test')
+        except requests.exceptions.HTTPError as err:
+            self.assertTrue(err.response.status_code is 404)
             raised = True
 
         self.assertTrue(raised)
