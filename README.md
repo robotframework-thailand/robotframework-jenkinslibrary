@@ -35,4 +35,5 @@ pip uninstall robotframework-jenkinslibrary
 | Get Jenkins Job | + |
 | Get Jenkins Job Build | + |
 | Build Jenkins With Parameters | + |
+| Build Jenkins With Parameters And Wait Until Job Done | + |
 | - | - |

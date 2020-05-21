@@ -40,8 +40,8 @@ CLASSIFIERS = [
 setup(
     name="robotframework-jenkinslibrary",
     version=VERSION,
-    author="Panchorn Lertvipada, Nitipat Phiphatprathuang",
-    author_email="nonpcn@gmail.com, banknitipat@gmail.com",
+    author="Panchorn Lertvipada, Nitipat Phiphatprathuang, Kanokwan Suttidee",
+    author_email="nonpcn@gmail.com, banknitipat@gmail.com, kanokwan.sut@ascendcorp.com",
     description="Jenkins wrapper library for robotframework",
     long_description=long_description,
     long_description_content_type="text/markdown",
