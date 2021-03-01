@@ -1,5 +1,5 @@
 # robotframework-jenkinslibrary
-[![codecov](https://codecov.io/gh/Panchorn/robotframework-jenkinslibrary/branch/master/graph/badge.svg)](https://codecov.io/gh/Panchorn/robotframework-jenkinslibrary)
+[![codecov](https://codecov.io/gh/robotframework-thailand/robotframework-jenkinslibrary/branch/master/graph/badge.svg)](https://codecov.io/gh/Panchorn/robotframework-jenkinslibrary)
 [![PyPI](https://img.shields.io/pypi/v/robotframework-jenkinslibrary.svg)](https://pypi.org/project/robotframework-jenkinslibrary/)
 
 Jenkins wrapper library for robotframework
@@ -23,7 +23,7 @@ ${job_build_details}=  | Build Jenkins With Parameters And Wait Until Job Done |
 
 ## Document
 For more keyword detail go to the following link:
-https://panchorn.github.io/robotframework-jenkinslibrary/
+https://robotframework-thailand.github.io/robotframework-jenkinslibrary/
 
 ## Uninstall package
 ```bash
