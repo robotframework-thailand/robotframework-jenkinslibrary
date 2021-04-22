@@ -177,7 +177,7 @@ class JenkinsFace(object):
     @staticmethod
     def _get_response(response):
         response.raise_for_status()
-        return json.loads(response.content, encoding='utf-8')
+        return json.loads(response.content)
 
     def _job_url(self, url_format, params):
         url = url_format.format(*params)
