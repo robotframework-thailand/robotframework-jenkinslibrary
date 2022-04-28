@@ -138,7 +138,14 @@ class JenkinsFace(object):
         return job_detail['nextBuildNumber']
 
     @keyword('Build Jenkins With Parameters And Wait Until Job Done')
-    def build_jenkins_with_parameters_and_wait_until_job_done(self, name=None, data=None, retry=24, retry_interval=5):
+    def build_jenkins_with_parameters_and_wait_until_job_done(
+            self,
+            name=None,
+            data=None,
+            retry=24,
+            retry_interval=5,
+            ignore_exception=True
+    ):
         """Build Jenkins With Parameters And Wait Until Job Done
 
         Trigger build job jenkins and wait until build job done
@@ -148,11 +155,11 @@ class JenkinsFace(object):
             - data: job's parameters ``str``
             - retry: number of times to retry ``int`` ``default is 24``
             - retry_interval: time to wait before checking job status again ``int`` ``default is 5``
+            - ignore_exception: flag to ignore an exception while waiting job done ``bool`` ``default is True``
 
         Return dictionary of job information if job done ``dict``, otherwise will return ``None``
 
-        Examples:
-        | ${job_build_details}= | Build Jenkins With Parameters And Wait Until Job Done | ${job_full_name} | ${parameters_string} | 10 | 2 |
+        Examples: | ${job_build_details}= | Build Jenkins With Parameters And Wait Until Job Done | ${job_full_name} | ${parameters_string} | 10 | 2 | False |
         """
         if not name:
             raise Exception('Job name should not be None')
@@ -161,15 +168,13 @@ class JenkinsFace(object):
             time.sleep(retry_interval)
             try:
                 response = self.get_jenkins_job_build(name, next_build_no)
-                if response['building'] == False:
+                if not response['building']:
                     return response
-            except requests.exceptions.HTTPError as err:
-                if err.response.status_code == 404:
+            except Exception as err:
+                if ignore_exception:
                     pass
                 else:
                     raise err
-            except Exception as err:
-                raise err
 
     def _send(self, req):
         return self._session.send(req, **self._settings)

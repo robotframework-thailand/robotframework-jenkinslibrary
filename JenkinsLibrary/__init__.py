@@ -16,7 +16,7 @@ class JenkinsLibrary(JenkinsFace):
     | ${job_details}=        | Get Jenkins Job  | ${job_full_name} |
     | ${job_build_details}=  | Get Jenkins Job Build | ${job_full_name} | ${build_number}  |
     | ${build_number}=       | Build Jenkins With Parameters | ${job_full_name} | ${parameters_string} |
-    | ${job_build_details}=  | Build Jenkins With Parameters And Wait Until Job Done | ${job_full_name} | ${parameters_string} | 10 | 2 |
+    | ${job_build_details}=  | Build Jenkins With Parameters And Wait Until Job Done | ${job_full_name} | ${parameters_string} | 10 | 2 | False    |
 
     """
 
