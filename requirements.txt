@@ -1,6 +1,6 @@
-requests
-robotframework
-pytest
-pytest-cov
-codecov
-requests_mock
+requests==2.26.0
+robotframework==3.2.2
+pytest==6.2.4
+pytest-cov==2.12.1
+codecov==2.1.12
+requests_mock==1.9.3
